@@ -1,0 +1,197 @@
+<!DOCTYPE html> 
+<html lang="en"> 
+    <head> 
+        <meta charset="UTF-8" /> 
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0" /> 
+        <title>Coin Toss</title>
+<style>
+	 *{ 
+    margin: 0; 
+    padding: 0; 
+    box-sizing: border-box; 
+} 
+  
+body { 
+    font-family: "Arial", sans-serif; 
+    background: linear-gradient( 135deg, #00a1ff,#00ff8f); 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    height: 100vh; 
+    margin: 0; 
+} 
+  
+.coin-container { 
+    background-color: rgba(red, green, blue, 0.9);
+    border-radius: 20px; 
+    box-shadow: 0 10px 20px
+        rgba(0, 0, 0, 0.3); 
+    padding: 2rem; 
+    text-align: center; 
+    animation: fadeIn 1s ease; 
+    width: 80%; 
+    max-width: 500px; 
+    perspective: 1000px; 
+} 
+  
+h1 { 
+    color: #d4af37;
+    font-size: 2.5rem; 
+    margin: 0 0 1rem; 
+    text-shadow: 2px 2px 4px
+        rgba(0, 0, 0, 0.2); 
+} 
+  
+.coin { 
+    width: 150px; 
+    height: 150px; 
+    border-radius: 50%; 
+    overflow: hidden; 
+    box-shadow: 0 8px 20px
+        rgba(0, 0, 0, 0.2); 
+    transition: transform 0.5s 
+        ease-in-out; 
+    margin: 0 auto; 
+    backface-visibility: hidden; 
+} 
+  
+button { 
+    background-color: #ff008a; 
+    color: #fff; 
+    border: none; 
+    padding: 10px 20px; 
+    border-radius: 10px; 
+    font-size: 1rem; 
+    cursor: pointer; 
+    transition: background-color 0.3s 
+            ease-in-out, 
+        transform 0.2s ease-in-out; 
+    width: 100%; 
+    margin-top: 20px; 
+} 
+  
+button:hover { 
+    background-image: linear-gradient( 
+        45deg, 
+        #ff00d4, 
+        #00ddff
+    ); 
+    transform: scale(1.05); 
+} 
+  
+.result { 
+    margin-top: 20px; 
+    font-size: 24px; 
+    color: #333; 
+    transition: opacity 0.5s ease-in-out; 
+    opacity: 0; 
+    text-transform: uppercase; 
+    font-weight: bold; 
+    text-shadow: 1px 1px 2px
+        rgba(0, 0, 0, 0.4); 
+    letter-spacing: 2px; 
+} 
+  
+.coin:hover { 
+    transform: scale(1.1); 
+    transition: transform 0.3s 
+        ease-in-out; 
+} 
+  
+@keyframes spin { 
+    0% { 
+        transform: rotateY(0deg); 
+    } 
+    100% { 
+        transform: rotateY(360deg); 
+    } 
+} 
+  
+.coin.flip { 
+    animation: spin 1s 
+        cubic-bezier(0.4, 2.5, 0.6, 0.5); 
+} 
+  
+.coin img { 
+    width: 100%; 
+    height: 100%; 
+    object-fit: cover; 
+    object-position: center; 
+    transform: rotateY(0deg); 
+} 
+  
+.coin-container { 
+    background-color:#f0f0f0; 
+    padding: 20px; 
+    border-radius: 10px; 
+    box-shadow: 0 4px 10px
+        rgba(0, 0, 0, 0.2); 
+    transition: transform 0.5s 
+        ease-in-out; 
+} 
+  
+.coin-container:hover { 
+    transform: scale(1.02); 
+} 
+  
+h2 { 
+    color: #ff7db8; 
+    font-size: 24px; 
+    margin: 10px 0; 
+} 
+</style> 
+    </head> 
+    <body> 
+        <div class="coin-container"> 
+            <h1 class="title"> 
+              <b> Toss the coin</b> 
+            </h1> 
+            <h3> 
+               Click the button to toss the coin
+            </h3> 
+            <br /> 
+            <div class="coin" id="coin"> 
+                <img src= "tails.jpg"
+                    alt="Heads"
+                /> 
+            </div> 
+            <button id="toss-button"> 
+                Toss Coin 
+            </button> 
+        </div> 
+        <p class="result"></p> 
+        <script>
+	const coinIcon = document.getElementById('coin'); 
+const tossBtn =  
+    document.getElementById('toss-button'); 
+const result =  
+    document.querySelector('.result'); 
+coinIcon.insertAdjacentElement('afterend', result); 
+tossBtn.addEventListener('click', () => { 
+    tossBtn.disabled = true; 
+    tossCoinFunction(); 
+}); 
+function tossCoinFunction() { 
+    const randomVal = Math.random(); 
+    const faceCoin = randomVal < 0.5 ? 'Heads' : 'Tails'; 
+    const imageUrl = faceCoin === 'Heads' ? 
+    'heads.jpg' : 
+     'tails.jpg'; 
+          
+    coinIcon.classList.add('flip'); 
+    setTimeout(() => { 
+        coinIcon.innerHTML =  
+            `<img src="${imageUrl}" alt="${faceCoin}">`; 
+        coinIcon.classList.remove('flip'); 
+        setTimeout(() => { 
+            result.textContent = `Result: ${faceCoin}`; 
+            result.style.opacity = 1; 
+            tossBtn.disabled = false; 
+        }, 500); 
+    }, 1000); 
+}
+       </script> 
+    </body> 
+</html>
