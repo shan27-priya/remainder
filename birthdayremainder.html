@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Birthday Reminder</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+           	background-image: url("remain.jpg");
+            background-repeat: no-repeat;
+            background-position: center;
+            background-attachment: fixed;
+            background-size: cover;
+            display:flex;
+            justify-content: center;
+            align-items: center;
+            height:100vh
+            margin: 10;           
+        }
+        .container {
+            background: rgba(255,255,255,0.8)
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+           
+        }
+        h1 {
+            text-align: center;
+            color: #d4af37;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        form input, form button {
+            padding: 10px;
+            border: 1px solid #b76e79;
+            border-radius: 4px;
+        }
+        .birthday-entry {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #b76e79;
+        }
+        .birthday-entry:last-child {
+            border-bottom: none;
+        }
+        .name {
+            font-weight: bold;
+	color: #b5338a;
+        }
+       .days-left {
+	font-weight: bold;
+           color: #301934;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Birthday Reminder</h1>
+        <form id="birthdayForm">
+            <input type="text" id="name" placeholder="Friend's Name" required>
+           <input type="date" id="date" required>
+           <button type="submit">Add 
+Birthday</button>
+        </form>
+        <div id="birthdayList">
+            <!-- Birthday entries will be inserted here by JavaScript -->
+       </div>
+    </div>
+    <script>
+        function calculateDaysLeft(birthday) {
+            const today = new Date();
+            const birthDate = new Date(birthday);
+            birthDate.setFullYear(today.getFullYear());
+           if (birthDate < today) {
+                birthDate.setFullYear(today.getFullYear() + 1);
+            }
+            const diffTime = Math.abs(birthDate - today);
+           const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+            return diffDays;
+        }
+        function displayBirthdays(birthdays) {
+            const birthdayList = document.getElementById('birthdayList');
+           birthdayList.innerHTML = '';
+            birthdays.forEach(birthday => {
+                const daysLeft = calculateDaysLeft(birthday.date);
+                const birthdayEntry = document.createElement('div');
+                birthdayEntry.classList.add('birthday-entry');
+                birthdayEntry.innerHTML = `
+                    <div class="name">${birthday.name}</div>
+                    <div class="days-left">${daysLeft} days left</div>
+                `;
+               birthdayList.appendChild(birthdayEntry);
+            });
+        }
+        document.getElementById('birthdayForm').addEventListener('submit', function
+(event) {
+            event.preventDefault();
+            const nameInput = document.getElementById('name');
+            const dateInput = document.getElementById('date');
+            const birthday = {
+               name: nameInput.value,
+                date: dateInput.value
+            };
+            const birthdays = JSON.parse(localStorage.getItem('birthdays')) || [];
+           birthdays.push(birthday);
+            localStorage.setItem('birthdays', JSON.stringify(birthdays));
+          displayBirthdays(birthdays);
+            nameInput.value = '';
+            dateInput.value = '';
+       });
+       document.addEventListener('DOMContentLoaded', function() {
+            const birthdays = JSON.parse(localStorage.getItem('birthdays')) || [];
+           displayBirthdays(birthdays);
+        });
+    </script>
+</body>
+</html>
